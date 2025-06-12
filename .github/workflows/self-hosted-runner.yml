@@ -1,0 +1,24 @@
+name: Self-Hosted Runner
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  test:
+    name: Testar runner auto hospedado
+    runs-on: self-hosted
+    steps:
+      - name: Mostrar sistema
+        run: uname -a
+
+      - name: Verificar versão do Java
+        run: java -version
+
+      - name: Instalar software adicional
+        run: |
+          sudo apt update
+          sudo apt install -y tree
