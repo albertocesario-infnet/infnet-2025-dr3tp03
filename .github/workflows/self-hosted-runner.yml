@@ -21,9 +21,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build com Maven
-        run: mvn clean install
-
       - name: Instalar software adicional
         run: |
           sudo apt update
