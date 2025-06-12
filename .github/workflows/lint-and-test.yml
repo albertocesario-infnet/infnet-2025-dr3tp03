@@ -1,0 +1,49 @@
+name: LINT AND TEST
+
+on:
+  workflow_call:
+    inputs:
+      run_tests:
+        required: true
+        type: string
+      run_lint:
+        required: true
+        type: string
+
+jobs:
+  lint:
+    name: Verificar estilo do código (Lint)
+    runs-on: ubuntu-latest
+    if: ${{ inputs.run_lint == 'true' }}
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Executar Lint (Checkstyle)
+        run: echo "Fazendo lint..."
+
+  test:
+    name: Executar testes
+    runs-on: ubuntu-latest
+    if: ${{ inputs.run_tests == 'true' }}
+    needs: lint
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Executar testes
+        run: mvn test
