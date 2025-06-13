@@ -1,0 +1,35 @@
+name: CHECK VARIAVEL
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-variable:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar se a variável MY_ENV_VAR está definida
+        id: check_var
+        run: |
+          if [ -z "${{ secrets.MY_ENV_VAR }}" ]; then
+            echo "VAR_ABSENT=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "VAR_ABSENT=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Criar issue se a variável estiver ausente
+        if: steps.check_var.outputs.VAR_ABSENT == 'true'
+        run: |
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               https://api.github.com/repos/${{ github.repository }}/issues \
+               -d '{
+                 "title": "Variável ausente: MY_ENV_VAR",
+                 "body": "A variável `MY_ENV_VAR` não está definida nos segredos do repositório."
+               }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
