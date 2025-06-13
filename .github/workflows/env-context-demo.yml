@@ -1,0 +1,40 @@
+name: ENV CONTEXT DEMO
+
+on:
+  workflow_dispatch:
+
+env:
+  WORKFLOW_VAR: "workflow_env"
+
+jobs:
+  show-env-scopes:
+    runs-on: ubuntu-latest
+
+    env:
+      JOB_VAR: "job_value"
+      STAGE: test
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Variáveis e contextos - Step 01
+        env:
+          STEP_VAR: "step1_env"
+        run: |
+          echo "=== Step 1 ==="
+          echo "User: ${{ github.actor }}"
+          echo "SO: ${{ runner.os }}"
+          echo "STAGE = $STAGE"
+          echo "WORKFLOW_VAR = $WORKFLOW_VAR"
+          echo "JOB_VAR = $JOB_VAR"
+          echo "STEP_VAR = $STEP_VAR"
+
+      - name: Variáveis e contextos - Step 02
+        env:
+          STAGE: prod
+        run: |
+          echo "=== Step 2 ==="
+          echo "STAGE (sobrescrito) = $STAGE"
+          echo "WORKFLOW_VAR = $WORKFLOW_VAR"
+          echo "JOB_VAR = $JOB_VAR"
