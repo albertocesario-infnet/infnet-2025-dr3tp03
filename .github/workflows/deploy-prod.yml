@@ -24,9 +24,7 @@ jobs:
           java-version: '17'
 
       - name: Build e testes
-        run: |
-          cd dr03tp03 
-          mvn clean package
+        run: mvn clean package
 
       - name: Deploy simulado em Produção
         run: |
