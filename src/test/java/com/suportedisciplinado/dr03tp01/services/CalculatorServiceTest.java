@@ -37,4 +37,10 @@ class CalculatorServiceTest {
         Double result = calculatorService.divide(6.0, 3.0);
         assertEquals(2.0, result);
     }
+
+    @Test
+    void sqrt() {
+        Double result = calculatorService.sqrt(16.0);
+        assertEquals(4.0, result);
+    }
 }

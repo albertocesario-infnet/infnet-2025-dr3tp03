@@ -29,4 +29,10 @@ public class CalculatorService {
         Double result = a / b;
         return result;
     }
+
+    @PostMapping("/sqrt")
+    public Double sqrt(@RequestParam Double a) {
+        Double result = Math.sqrt(a);
+        return result;
+    }
 }
