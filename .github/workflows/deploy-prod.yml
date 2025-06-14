@@ -1,0 +1,33 @@
+name: DEPLOY PROD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-prod:
+    name: Deploy para Ambiente Produção
+    runs-on: ubuntu-latest
+
+    environment:
+      name: prod
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build e testes
+        run: |
+          cd dr03tp03 
+          mvn clean package
+
+      - name: Deploy simulado em Produção
+        run: |
+          echo "Deploy em Produção concluído"
